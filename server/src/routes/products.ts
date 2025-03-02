@@ -6,16 +6,16 @@ import { HTTPException } from 'hono/http-exception'
 
 const app = new Hono()
 
-app.post('/', async (c) => {
+app.get('/', async (c) => {
 	try {
-		const body = await c.req.json()
+		const categoryId = await c.req.query('categoryId')
 
 		const whereQuery = {} as {
 			categoryId?: string
 		}
 
-		if (body?.categoryId) {
-			whereQuery.categoryId = body.categoryId
+		if (categoryId) {
+			whereQuery.categoryId = categoryId
 		}
 
 		const data = await prisma.product.findMany({
@@ -27,6 +27,8 @@ app.post('/', async (c) => {
 		})
 		return c.json({ data })
 	} catch (error) {
+		console.log(error)
+
 		throw new HTTPException(400, {
 			message: 'Internal server error. Please try again',
 		})

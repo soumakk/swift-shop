@@ -17,13 +17,14 @@ app.use(
 )
 
 app.get('/', (c) => {
-	return c.text('Hello Hono!') 
+	return c.text('Hello Hono!')
 })
 
 app.route('/api', apiRoutes)
 
 // error handling
 app.onError((err, c) => {
+	console.log(err)
 	const status = (err as any)?.status ?? 500
 	return c.json(
 		{

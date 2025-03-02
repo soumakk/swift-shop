@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import FloatingCounter from '../ui/FloatingCounter'
 import { IconButton } from '../ui/IconButton'
@@ -11,8 +13,14 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '../ui/avatar'
+import { useCart } from '@/hooks/useCart'
+import CartDrawer from '../products/CartDrawer'
+import { useState } from 'react'
 
 export default function Header({ minimal }: { minimal?: boolean }) {
+	const { cartCount } = useCart()
+	const [isCartOpen, setIsCartOpen] = useState(false)
+
 	return (
 		<header className="max-w-5xl mx-auto px-4">
 			<div className="flex items-center justify-between h-20">
@@ -25,8 +33,8 @@ export default function Header({ minimal }: { minimal?: boolean }) {
 				<div className="flex items-center gap-3">
 					{!minimal && (
 						<>
-							<FloatingCounter count={1}>
-								<IconButton>
+							<FloatingCounter count={cartCount}>
+								<IconButton onClick={() => setIsCartOpen(true)}>
 									<BagIcon size={24} className="mb-0.5" />
 								</IconButton>
 							</FloatingCounter>
@@ -56,6 +64,8 @@ export default function Header({ minimal }: { minimal?: boolean }) {
 					</Link>
 				</div>
 			</div>
+
+			<CartDrawer open={isCartOpen} onClose={() => setIsCartOpen(false)} />
 		</header>
 	)
 }
