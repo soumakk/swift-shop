@@ -1,12 +1,15 @@
 import Header from '@/components/layouts/Header'
 import ProductsList from '@/components/products/ProductsList'
+import { Suspense } from 'react'
 
 export default function Home() {
 	return (
-		<div>
-			<Header />
+		<Suspense>
+			<div>
+				<Header />
 
-			<ProductsList />
-		</div>
+				<ProductsList />
+			</div>
+		</Suspense>
 	)
 }

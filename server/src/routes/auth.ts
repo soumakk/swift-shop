@@ -1,12 +1,11 @@
-import { Hono } from 'hono'
-import { auth } from '../lib/firebase.ts'
-import prisma from '../lib/prisma.ts'
-import { HTTPException } from 'hono/http-exception'
-import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
-import { toInt } from 'radash'
 import { verifySessionMiddleware } from '@/lib/auth.middleware.ts'
 import { ZSignupReqBody, type ISignupReqBody, type IVariables } from '@/types/auth.types.ts'
 import { zValidator } from '@hono/zod-validator'
+import { Hono } from 'hono'
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
+import { HTTPException } from 'hono/http-exception'
+import { auth } from '../lib/firebase.ts'
+import prisma from '../lib/prisma.ts'
 
 const app = new Hono<{ Variables: IVariables }>()
 
@@ -21,7 +20,7 @@ app.post('/login', async (ctx) => {
 		// find the user in db with userId
 		const user = await prisma.user.findUnique({
 			where: {
-				id: toInt(metadata.userId),
+				id: metadata.userId,
 			},
 		})
 		if (!user) {
@@ -106,7 +105,7 @@ app.get('/profile', verifySessionMiddleware, async (c) => {
 		const userId = c.get('userId')
 		const user = await prisma.user.findUnique({
 			where: {
-				id: toInt(userId),
+				id: userId,
 			},
 		})
 		if (!user) {

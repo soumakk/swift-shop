@@ -26,7 +26,7 @@ export default function Header({ minimal }: { minimal?: boolean }) {
 			<div className="flex items-center justify-between h-20">
 				<Link href="/">
 					<h2 className="text-xl font-semibold">
-						Lux.<span className="text-gray-400">Shop</span>
+						Swift.<span className="text-gray-400">Shop</span>
 					</h2>
 				</Link>
 

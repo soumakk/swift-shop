@@ -1,11 +1,14 @@
 import Header from '@/components/layouts/Header'
 import ProductDetails from '@/components/products/ProductDetails'
+import { Suspense } from 'react'
 
 export default function ProductDetailsPage() {
 	return (
-		<div>
-			<Header />
-			<ProductDetails />
-		</div>
+		<Suspense>
+			<div>
+				<Header />
+				<ProductDetails />
+			</div>
+		</Suspense>
 	)
 }
