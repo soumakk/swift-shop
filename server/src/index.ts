@@ -9,9 +9,10 @@ const app = new Hono()
 app.use(logger())
 // cors
 app.use(
-	'*',
 	cors({
 		origin: process.env.FRONTEND_URL,
+		allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		allowHeaders: ['Content-Type', 'Authorization'],
 		credentials: true,
 	})
 )
