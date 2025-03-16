@@ -6,10 +6,13 @@ import apiRoutes from './routes/routes.ts'
 
 const app = new Hono()
 
-console.log(process.env.FRONTEND_URL)
-
 app.use(logger())
-app.use(cors())
+app.use(
+	cors({
+		origin: process.env.FRONTEND_URL,
+		credentials: true,
+	})
+)
 
 app.get('/', (c) => {
 	return c.text('Hello Hono!')
