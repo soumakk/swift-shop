@@ -5,11 +5,14 @@ import { Suspense } from 'react'
 
 export default async function Home() {
 	const products = await fetchProducts()
+	console.log(products)
 
 	return (
 		<Suspense>
 			<div>
 				<Header />
+
+				{JSON.stringify(products)}
 
 				<div className="max-w-5xl mx-auto px-4">
 					<div className="py-10">
