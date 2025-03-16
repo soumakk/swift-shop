@@ -37,6 +37,7 @@ app.post('/login', async (ctx) => {
 			httpOnly: true,
 			secure: true,
 			path: '/',
+			sameSite: 'Strict',
 		})
 
 		return ctx.json({ success: true, user })
