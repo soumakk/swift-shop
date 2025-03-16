@@ -1,8 +1,8 @@
-import { atom, useAtom } from 'jotai'
-import { useMemo } from 'react'
-import { atomWithStorage } from 'jotai/utils'
-import type { IProduct, IProductVariant } from '@/types/products.types'
 import { ICartAddress, ICartItem } from '@/types/cart.types'
+import type { IProduct, IProductVariant } from '@/types/products.types'
+import { atom, useAtom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
+import { useMemo } from 'react'
 
 const cartItemsAtom = atomWithStorage<ICartItem[]>('cart', [])
 const cartAddressAtom = atom<ICartAddress | null>(null)
@@ -26,6 +26,10 @@ export function useCart() {
 			}
 			return items
 		})
+	}
+
+	function isAlreadyPresent(variantId?: string) {
+		return Boolean(cartItems?.find((item) => item?.variant?.id === variantId))
 	}
 
 	function removeItemFromCart(variantId: string) {
@@ -65,5 +69,6 @@ export function useCart() {
 		cartAddress,
 		saveCartAddress,
 		emptyCart,
+		isAlreadyPresent,
 	}
 }

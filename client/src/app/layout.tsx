@@ -1,15 +1,12 @@
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
 import QueryProvider from '@/context/QueryProvider'
+import type { Metadata } from 'next'
+import { Figtree } from 'next/font/google'
+import './globals.css'
+import { Toaster } from 'react-hot-toast'
+import AuthProvider from '@/context/AuthContext'
 
-const geistSans = Geist({
-	variable: '--font-geist-sans',
-	subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-	variable: '--font-geist-mono',
+const figtree = Figtree({
+	variable: '--font-figtree-sans',
 	subsets: ['latin'],
 })
 
@@ -25,8 +22,15 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<QueryProvider>{children}</QueryProvider>
+			<body className={`${figtree.variable} antialiased`}>
+				<QueryProvider>
+					<AuthProvider>{children}</AuthProvider>
+				</QueryProvider>
+				<Toaster
+					toastOptions={{
+						duration: 2000,
+					}}
+				/>
 			</body>
 		</html>
 	)

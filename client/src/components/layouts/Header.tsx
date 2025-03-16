@@ -16,9 +16,13 @@ import { Avatar, AvatarFallback } from '../ui/avatar'
 import { useCart } from '@/hooks/useCart'
 import CartDrawer from '../products/CartDrawer'
 import { useState } from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import { useUser } from '@/services/query/user.query'
 
 export default function Header({ minimal }: { minimal?: boolean }) {
 	const { cartCount } = useCart()
+	const { logout } = useAuth()
+	const { user } = useUser()
 	const [isCartOpen, setIsCartOpen] = useState(false)
 
 	return (
@@ -44,24 +48,29 @@ export default function Header({ minimal }: { minimal?: boolean }) {
 							</IconButton>
 						</>
 					)}
-					<DropdownMenu>
-						<DropdownMenuTrigger>
-							<Avatar className="bg-blue-200">
-								<AvatarFallback>S</AvatarFallback>
-							</Avatar>
-						</DropdownMenuTrigger>
 
-						<DropdownMenuContent>
-							<DropdownMenuItem>Profile</DropdownMenuItem>
-							<DropdownMenuItem>Orders</DropdownMenuItem>
-							<DropdownMenuItem>Wishlist</DropdownMenuItem>
-							<DropdownMenuItem>Logout</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+					{user ? (
+						<DropdownMenu>
+							<DropdownMenuTrigger>
+								<Avatar className="">
+									<AvatarFallback className="text-blue-600 bg-blue-100 font-bold">
+										{user?.name?.slice(0, 1)}
+									</AvatarFallback>
+								</Avatar>
+							</DropdownMenuTrigger>
 
-					<Link href="/login">
-						<Button>Login</Button>
-					</Link>
+							<DropdownMenuContent>
+								<DropdownMenuItem>Profile</DropdownMenuItem>
+								<DropdownMenuItem>Orders</DropdownMenuItem>
+								<DropdownMenuItem>Wishlist</DropdownMenuItem>
+								<DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					) : (
+						<Link href="/login">
+							<Button>Login</Button>
+						</Link>
+					)}
 				</div>
 			</div>
 

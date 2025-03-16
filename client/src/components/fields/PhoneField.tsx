@@ -37,7 +37,7 @@ export default function PhoneField({ label, value, onChange, ...rest }: PhoneFie
 
 			<div className="relative flex">
 				<Select value={country?.iso2} onValueChange={(country) => setCountry(country)}>
-					<SelectTrigger className="w-auto shadow-none h-auto mb-0 rounded-tr-none rounded-br-none gap-1">
+					<SelectTrigger className="w-auto shadow-none h-10 mb-0 rounded-tr-none rounded-br-none gap-1">
 						<SelectValue>
 							<FlagImage iso2={country?.iso2} />
 						</SelectValue>

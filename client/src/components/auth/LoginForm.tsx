@@ -1,20 +1,16 @@
 'use client'
 
-import { getUrl } from '@/services/api'
-import { Role } from '@/types/common.types'
-import { useForm } from '@tanstack/react-form'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation'
-import { useState, type FormEvent } from 'react'
-import { getIdToken, signInWithEmailAndPassword } from 'firebase/auth'
-import { toast } from 'sonner'
-import { auth } from '@/lib/firebase'
 import InputField from '@/components/fields/InputField'
-import { Label } from '@/components/ui/label'
 import PasswordField from '@/components/fields/PasswordField'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import React from 'react'
+import { Label } from '@/components/ui/label'
+import { auth } from '@/lib/firebase'
+import { loginFn } from '@/services/api/auth.api'
+import { useForm } from '@tanstack/react-form'
+import { getIdToken, signInWithEmailAndPassword } from 'firebase/auth'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, type FormEvent } from 'react'
+import { toast } from 'react-hot-toast'
 
 export default function LoginForm() {
 	const router = useRouter()
@@ -24,7 +20,7 @@ export default function LoginForm() {
 
 	const form = useForm({
 		defaultValues: {
-			email: 'soumak@yopmail.com',
+			email: 'test@yopmail.com',
 			password: 'Password@123',
 		},
 		onSubmit: async ({ value }) => {
@@ -36,28 +32,24 @@ export default function LoginForm() {
 					value.password
 				)
 				const token = await getIdToken(userCredential?.user)
-				const res = await fetch(getUrl('/login'), {
-					method: 'POST',
-					credentials: 'include',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ token }),
-				})
-				if (!res.ok) {
+
+				try {
+					await loginFn({ token })
+				} catch (error) {
 					throw new Error('Login failed')
 				}
-				const data = await res.json()
 
-				if (data?.user?.role === Role.Admin) {
-					router.push('/dashboard')
-				} else if (redirectUrl) {
+				if (redirectUrl) {
 					router.push(redirectUrl)
 				} else {
 					router.push('/')
 				}
 			} catch (error) {
-				toast.error((error as Error)?.message)
+				if ((error as Error)?.message?.includes('auth/invalid-credential')) {
+					toast.error('Email or password is wrong')
+				} else {
+					toast.error((error as Error)?.message)
+				}
 			} finally {
 				setIsLoading(false)
 			}
@@ -75,7 +67,7 @@ export default function LoginForm() {
 			<div>
 				<div className="mb-12">
 					<h1 className="text-4xl font-semibold text-center">Welcome back</h1>
-					<p className="max-w-md mx-auto text-sm text-muted-foreground mt-4 text-center">
+					<p className="max-w-md mx-auto text-sm text-muted-foreground mt-2 text-center">
 						Log in to access your account and stay connected
 					</p>
 				</div>
@@ -95,12 +87,12 @@ export default function LoginForm() {
 						)}
 					</form.Field>
 
-					<div className="space-y-3">
+					<div className="">
 						<div className="flex justify-between items-center">
 							<Label htmlFor="password">Password</Label>
-							<a href="#" className="text-xs underline text-primary">
+							{/* <a href="#" className="text-xs underline text-primary">
 								Forgot password?
-							</a>
+							</a> */}
 						</div>
 						<form.Field name="password">
 							{(field) => (
@@ -132,12 +124,12 @@ export default function LoginForm() {
 				</div> */}
 				</form>
 
-				<p className="text-sm text-center mt-8">
+				{/* <p className="text-sm text-center mt-8">
 					Don&apos;t have an account?{' '}
 					<Link href="/signup" className="text-primary underline">
 						Sign up
 					</Link>
-				</p>
+				</p> */}
 			</div>
 		</div>
 	)

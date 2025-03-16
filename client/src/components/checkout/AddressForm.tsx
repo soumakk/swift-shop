@@ -1,11 +1,10 @@
+import { useCart } from '@/hooks/useCart'
 import { useForm } from '@tanstack/react-form'
 import { defaultCountries, FlagImage, parseCountry } from 'react-international-phone'
 import InputField from '../fields/InputField'
 import PhoneField from '../fields/PhoneField'
-import { useEffect } from 'react'
-import { useCart } from '@/hooks/useCart'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Button } from '../ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 export default function AddressForm({ onSubmit }: { onSubmit: () => void }) {
 	const { cartAddress, saveCartAddress } = useCart()
@@ -25,8 +24,6 @@ export default function AddressForm({ onSubmit }: { onSubmit: () => void }) {
 			onSubmit?.()
 		},
 	})
-
-	useEffect(() => {}, [])
 
 	return (
 		<form

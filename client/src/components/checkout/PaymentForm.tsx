@@ -23,7 +23,7 @@ export default function PaymentForm() {
 			return
 		}
 
-		const newOrderRes = await fetchFn<{ orderId: string }>('/order/place-order', 'POST', {
+		const newOrderRes = await fetchFn<{ orderId: string }>('/orders/place-order', 'POST', {
 			items: cartItems?.map((item) => ({
 				variantId: item?.variant?.id,
 				quantity: item?.quantity,
@@ -33,10 +33,8 @@ export default function PaymentForm() {
 		})
 		const orderId = newOrderRes?.orderId
 
-		//
-
 		const paymentIntentRes = await fetchFn<{ clientSecret: string }>(
-			'/order/create-payment-intent',
+			'/orders/create-payment-intent',
 			'POST',
 			{
 				currency: 'inr',
@@ -47,6 +45,7 @@ export default function PaymentForm() {
 		const clientSecret = paymentIntentRes?.clientSecret
 
 		if (clientSecret) {
+			emptyCart()
 			const result = await stripe.confirmPayment({
 				elements,
 				clientSecret,
@@ -66,7 +65,6 @@ export default function PaymentForm() {
 				// Show error to your customer (for example, payment details incomplete)
 				console.log(result.error.message)
 			} else {
-				emptyCart()
 				// Your customer will be redirected to your `return_url`. For some payment
 				// methods like iDEAL, your customer will be redirected to an intermediate
 				// site first to authorize the payment, then redirected to the `return_url`.

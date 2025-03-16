@@ -1,4 +1,4 @@
-import { verifySessionMiddleware } from '@/lib/auth.middleware.ts'
+import { verifySession } from '@/lib/auth.middleware.ts'
 import { ZSignupReqBody, type ISignupReqBody, type IVariables } from '@/types/auth.types.ts'
 import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
@@ -69,6 +69,7 @@ app.post('/signup', zValidator('json', ZSignupReqBody), async (c) => {
 		const user = await prisma.user.findUnique({
 			where: {
 				email: body.email,
+				uid: body.uid,
 			},
 		})
 
@@ -84,23 +85,21 @@ app.post('/signup', zValidator('json', ZSignupReqBody), async (c) => {
 				email: body.email,
 				name: body.name,
 				uid: body.uid,
-				role: body?.role ?? 'Customer',
 			},
 		})
 
-		// store role and userId in the token
-		await auth.setCustomUserClaims(newUser?.uid, { role: newUser.role, userId: newUser.id })
+		// store userId in the token
+		await auth.setCustomUserClaims(newUser?.uid, { userId: newUser.id })
 
 		return c.json({ success: true })
 	} catch (error) {
-		console.log(error)
 		throw new HTTPException(400, {
 			message: 'Signup failed! Try again',
 		})
 	}
 })
 
-app.get('/profile', verifySessionMiddleware, async (c) => {
+app.get('/profile', verifySession, async (c) => {
 	try {
 		const userId = c.get('userId')
 		const user = await prisma.user.findUnique({

@@ -9,7 +9,7 @@ const app = new Hono()
 app.use(logger())
 // cors
 app.use(
-	'/api/*',
+	'*',
 	cors({
 		origin: process.env.FRONTEND_URL,
 		credentials: true,

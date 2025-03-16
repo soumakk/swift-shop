@@ -20,7 +20,7 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
 							<img
 								src={item?.variant?.images?.[0]}
 								alt=""
-								className="w-24 rounded-xl"
+								className="w-24 h-24 rounded-xl object-cover smooth-cover-fit"
 							/>
 
 							<div className="flex-1">

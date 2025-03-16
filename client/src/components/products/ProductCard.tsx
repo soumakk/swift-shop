@@ -7,7 +7,13 @@ export default function ProductCard({ product }: { product: IProduct }) {
 	return (
 		<div>
 			<Link href={`/${product.id}?variantId=${defaultVariant?.id}`}>
-				<img src={defaultVariant?.images?.[0]} alt="shoe" />
+				<figure className="h-80 overflow-hidden">
+					<img
+						src={defaultVariant?.images?.[0]}
+						className="h-full w-full object-cover smooth-cover-fit"
+						alt="shoe"
+					/>
+				</figure>
 
 				<div className="mt-3">
 					<div className="flex items-center justify-between">
