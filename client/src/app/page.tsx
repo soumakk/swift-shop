@@ -11,6 +11,14 @@ export default async function Home() {
 			<div>
 				<Header />
 
+				<figure className="h-[400px] max-w-6xl mx-auto px-4">
+					<img
+						src="/paul-volkmer-updW-QUccFE-unsplash.jpg"
+						className="h-full w-full object-cover rounded-xl"
+						alt="banner"
+					/>
+				</figure>
+
 				<div className="max-w-5xl mx-auto px-4">
 					<div className="py-10">
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

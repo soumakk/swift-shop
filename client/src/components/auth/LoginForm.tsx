@@ -124,6 +124,10 @@ export default function LoginForm() {
 				</div> */}
 				</form>
 
+				<p className="text-sm text-center mt-8 text-muted-foreground">
+					By continuing, you agree to the terms and conditions
+				</p>
+
 				{/* <p className="text-sm text-center mt-8">
 					Don&apos;t have an account?{' '}
 					<Link href="/signup" className="text-primary underline">

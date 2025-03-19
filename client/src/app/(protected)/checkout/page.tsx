@@ -15,8 +15,6 @@ export default function CheckoutPage() {
 	const { cartItems, subTotal, cartTotal, deliveryCharge, removeItemFromCart } = useCart()
 	const [currentStep, setCurrentStep] = useState(0)
 
-	// const { user } = useUser()
-
 	return (
 		<div>
 			<Header minimal />

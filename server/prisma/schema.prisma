@@ -25,6 +25,7 @@ model User {
 
   orders    Order[]
   addresses UserAddress[]
+  wishlist  Wishlist[]
 }
 
 model UserAddress {
@@ -77,6 +78,7 @@ model ProductVariant {
   productId String  @db.ObjectId
 
   orderItems OrderItem[]
+  wishlist   Wishlist[]
 }
 
 model Order {
@@ -88,7 +90,8 @@ model Order {
   totalAmount Float
   status      OrderStatus
 
-  user User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
 
   orderItems OrderItem[]
 
@@ -97,7 +100,6 @@ model Order {
 
   orderAddress   OrderAddress @relation(fields: [orderAddressId], references: [id])
   orderAddressId String       @db.ObjectId
-  userId         String       @db.ObjectId
 }
 
 model OrderAddress {
@@ -125,6 +127,18 @@ model OrderItem {
 
   variant   ProductVariant @relation(fields: [variantId], references: [id])
   variantId String         @db.ObjectId
+}
+
+model Wishlist {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  variant   ProductVariant @relation(fields: [variantId], references: [id])
+  variantId String         @db.ObjectId
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
 }
 
 enum OrderStatus {

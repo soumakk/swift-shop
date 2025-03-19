@@ -28,7 +28,7 @@ export default function RootLayout({
 				</QueryProvider>
 				<Toaster
 					toastOptions={{
-						duration: 2000,
+						duration: 4000,
 					}}
 				/>
 			</body>
